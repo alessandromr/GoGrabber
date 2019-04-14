@@ -3,7 +3,6 @@ package main
 import (
 	"./databases"
 	"./memqueue"
-	"fmt"
 	"github.com/joho/godotenv"
 	"log"
 	"os"
@@ -19,13 +18,11 @@ func loadEnv() {
 	checkErr(godotenv.Load())
 }
 
-func printStart(url string) {
-	fmt.Println("Starting request for: ", url)
+func printStart(url string, w *widgets) {
+	addText("Starting request for: "+url, w.doneText)
 }
-func printComplete() {
-	fmt.Printf("Complete.... Waiting %s seconds for next one.\n", os.Getenv("WAITING_TIME"))
-	fmt.Println("-------------------------------------------")
-	fmt.Println("")
+func printComplete(w *widgets) {
+	addText("Complete.... Waiting "+os.Getenv("WAITING_TIME")+" seconds for next one.", w.doneText)
 }
 
 func mapToSlice(m map[string]int) []string {
@@ -36,9 +33,9 @@ func mapToSlice(m map[string]int) []string {
 	return slice
 }
 
-func checkRequestError(err error, dbManager databases.DataManager, next string, queue *memqueue.Queue) bool {
+func checkRequestError(err error, dbManager databases.DataManager, next string, queue *memqueue.Queue, w *widgets) bool {
 	if err != nil {
-		log.Printf("\nThis URL has something wrong, better skip\n")
+		addText("\nThis URL has something wrong, better skip it\n", w.errorsText)
 		go func() {
 			dbManager.RemoveFromMysql(GetCleanUrl(next))
 		}()

@@ -5,16 +5,18 @@ import (
 	"./HttpRequester"
 	"./databases"
 	"./memqueue"
+	"os"
+	"strconv"
 	"sync"
 	"time"
 )
 
-func worker(jobs <-chan string, dbManager databases.DataManager, queue *memqueue.Queue, recent *memqueue.Queue) {
+func worker(jobs <-chan string, dbManager databases.DataManager, queue *memqueue.Queue, recent *memqueue.Queue, w *widgets) {
 	for next := range jobs {
 		if next == "" {
 			continue
 		}
-		printStart(next)
+		printStart(next, w)
 		/*Prepare request*/
 		requester := HttpRequester.HttpRequester{
 			URL:       next,
@@ -23,7 +25,7 @@ func worker(jobs <-chan string, dbManager databases.DataManager, queue *memqueue
 		}
 		/*Actual Check*/
 		document, err := requester.MakeCheck()
-		if checkRequestError(err, dbManager, next, recent) {
+		if checkRequestError(err, dbManager, next, recent, w) {
 			continue
 		}
 
@@ -35,8 +37,9 @@ func worker(jobs <-chan string, dbManager databases.DataManager, queue *memqueue
 		extMap, intMap := DivideURLByType(urls, GetDomainFromUrl(next))
 		storeResponse(next, extMap, intMap, dbManager, queue, recent)
 
-		printComplete()
-		time.Sleep(time.Second * 1)
+		printComplete(w)
+		wait, _ := strconv.Atoi(os.Getenv("WAITING_TIME"))
+		time.Sleep(time.Second * time.Duration(wait))
 	}
 
 }
