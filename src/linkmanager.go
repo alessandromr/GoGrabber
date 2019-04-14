@@ -36,7 +36,8 @@ func DivideURLByType(links []string, domainUrl string) (map[string]int, map[stri
 * @return
  */
 func GetCleanUrl(url string) string {
-	regex, _ := regexp.Compile("^(http[s]?:\\/\\/)(((www)?)([a-z0-9A-Z\\-\\.]+))((\\/)[a-zA-Z0-9\\/\\-\\_\\:\\+\\.]+)?$")
+	regex, err := regexp.Compile("^(http[s]?:\\/\\/)(((www)?)([a-z0-9A-Z\\-\\.]+))((\\/)[a-zA-Z0-9\\/\\-\\_\\:\\+\\.]+)?$")
+	checkErr(err)
 	found := regex.FindStringSubmatch(url)
 	return found[1] + found[2]
 }
@@ -47,7 +48,8 @@ func GetCleanUrl(url string) string {
 * @return
  */
 func GetDomainFromUrl(startUrl string) string {
-	regex, _ := regexp.Compile("(http(s)?:\\/\\/)([\\w.-]+)(\\.[\\w\\.-]+)")
+	regex, err := regexp.Compile("(http(s)?:\\/\\/)([\\w.-]+)(\\.[\\w\\.-]+)")
+	checkErr(err)
 	found := regex.FindStringSubmatch(startUrl)
 	return found[3] + found[4]
 }

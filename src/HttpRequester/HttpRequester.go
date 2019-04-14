@@ -32,7 +32,7 @@ func (req HttpRequester) MakeCheck() (goquery.Document, error) {
 	// Make request
 	response, err := client.Do(request)
 	if err != nil {
-		log.Println("Error making HTTP request.", err)
+		// log.Println("Error making HTTP request.", err)
 		return *new(goquery.Document), err
 	}
 	defer response.Body.Close()
@@ -40,7 +40,7 @@ func (req HttpRequester) MakeCheck() (goquery.Document, error) {
 	// Create a goquery document from the HTTP response
 	document, err := goquery.NewDocumentFromReader(response.Body)
 	if err != nil {
-		log.Println("Error loading HTTP response body. ", err)
+		// log.Println("Error loading HTTP response body. ", err)
 		return *new(goquery.Document), err
 	}
 	return *document, err
