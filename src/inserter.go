@@ -10,16 +10,22 @@ import (
 func inserter(jobs chan<- string, dbManager databases.DataManager, queue *memqueue.Queue, recent *memqueue.Queue) {
 	for {
 		time.Sleep(time.Millisecond * 500)
-		log.Println("Checking for new jobs")
+
 		//If there are no recent elements just get one from queue
 		if len(recent.URLs) < 1 {
-			mess, _ := queue.Pop()
-			jobs <- mess.URL
+			mess, err := queue.Pop()
+			if err == nil {
+				jobs <- mess.URL
+			}
 			continue
 		}
 
 		//Peek last n elements from queue
-		messages, _ := queue.PeekN(recent.Qlen)
+		messages, err := queue.PeekN(recent.Qlen)
+		if err != nil {
+			log.Println("No elements in queue")
+			continue
+		}
 
 		var good string
 		bad := false
@@ -35,9 +41,8 @@ func inserter(jobs chan<- string, dbManager databases.DataManager, queue *memque
 			if !bad {
 				good = inQueue.URL
 				queue.Delete(good)
-				log.Println("Insert: ", good)
 				jobs <- good
-				break
+				continue
 			}
 		}
 		//If no element is found return empty

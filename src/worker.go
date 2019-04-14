@@ -6,13 +6,15 @@ import (
 	"./databases"
 	"./memqueue"
 	"sync"
+	"time"
 )
 
 func worker(jobs <-chan string, dbManager databases.DataManager, queue *memqueue.Queue, recent *memqueue.Queue) {
-
 	for next := range jobs {
+		if next == "" {
+			continue
+		}
 		printStart(next)
-
 		/*Prepare request*/
 		requester := HttpRequester.HttpRequester{
 			URL:       next,
@@ -34,6 +36,7 @@ func worker(jobs <-chan string, dbManager databases.DataManager, queue *memqueue
 		storeResponse(next, extMap, intMap, dbManager, queue, recent)
 
 		printComplete()
+		time.Sleep(time.Second * 1)
 	}
 
 }

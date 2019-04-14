@@ -22,7 +22,6 @@ func (req HttpRequester) MakeCheck() (goquery.Document, error) {
 	client := &http.Client{
 		Timeout: req.Timeout * time.Second,
 	}
-
 	// Create and modify HTTP request before sending
 	request, err := http.NewRequest("GET", req.URL, nil)
 	if err != nil {

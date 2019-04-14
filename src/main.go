@@ -13,6 +13,7 @@ func main() {
 	//Prepare the Database clients
 	var dbManager = databases.DataManager{}
 	dbManager.SetClients()
+	dbManager.RedisClient.FlushDB()
 
 	queue := memqueue.Queue{Qlen: 1500}
 	recent := memqueue.Queue{Qlen: 40}
@@ -34,8 +35,6 @@ func main() {
 		}
 	}()
 
-	for {
-
-	}
+	select {}
 
 }

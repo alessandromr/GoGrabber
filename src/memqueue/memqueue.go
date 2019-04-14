@@ -44,10 +44,12 @@ func (q Queue) Peek() (URL, error) {
 //PeekN will get an array of Url from the queue without deleting it
 func (q Queue) PeekN(qty int) ([]URL, error) {
 	var retSlice []URL
+	if qty > len(q.URLs) {
+		qty = len(q.URLs)
+	}
 	for index := 0; index < qty; {
-		if ok := q.URLs[index]; ok.Domain != "" && ok.Clean != "" {
-			retSlice = append(retSlice, q.URLs[index])
-		}
+		retSlice = append(retSlice, q.URLs[index])
+		index++
 	}
 	if len(retSlice) > 0 {
 		return retSlice, nil
