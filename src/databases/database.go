@@ -28,6 +28,22 @@ func (ins *DataManager) SetClients() {
 		DB:       0,                     // use default DB
 	})
 
+	ins.createTableIfNotExists()
+}
+
+//createTableIfNotExists will intialize the mysql DB and create table if not exist
+func (ins *DataManager) createTableIfNotExists() {
+	stmtIns, err := ins.MySQLClient.Prepare(`
+		CREATE TABLE IF NOT EXISTS sites(
+			id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+			url VARCHAR(500) NOT NULL UNIQUE,
+			created_at DATETIME DEFAULT CURRENT_TIMESTAMP
+		)
+	`)
+	checkErr(err)
+	defer stmtIns.Close()
+	_, err = stmtIns.Exec()
+	checkErr(err)
 }
 
 //RegisterURLToMysql save a map of string (URL) to MYSQL
