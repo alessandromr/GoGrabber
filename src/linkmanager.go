@@ -1,6 +1,7 @@
 package main
 
 import (
+	"net/url"
 	"regexp"
 	"strings"
 )
@@ -35,11 +36,14 @@ func DivideURLByType(links []string, domainUrl string) (map[string]int, map[stri
 * @parameter
 * @return
  */
-func GetCleanUrl(url string) string {
-	regex, err := regexp.Compile("^(http[s]?:\\/\\/)(((www)?)([a-z0-9A-Z\\-\\.]+))((\\/)[a-zA-Z0-9\\/\\-\\_\\:\\+\\.]+)?$")
+func GetCleanUrl(urlString string) string {
+	u, err := url.Parse(urlString)
 	checkErr(err)
-	found := regex.FindStringSubmatch(url)
-	return found[1] + found[2]
+	return u.Scheme + "://" + u.Host
+	// regex, err := regexp.Compile("^(http[s]?:\\/\\/)(((www)?)([a-z0-9A-Z\\-\\.]+))((\\/)[a-zA-Z0-9\\/\\-\\_\\:\\+\\.]+)?$")
+	// checkErr(err)
+	// found := regex.FindStringSubmatch(url)
+	// return found[1] + found[2]
 }
 
 /**
@@ -47,11 +51,14 @@ func GetCleanUrl(url string) string {
 * @parameter
 * @return
  */
-func GetDomainFromUrl(startUrl string) string {
-	regex, err := regexp.Compile("(http(s)?:\\/\\/)([\\w.-]+)(\\.[\\w\\.-]+)")
+func GetDomainFromUrl(urlString string) string {
+	u, err := url.Parse(urlString)
 	checkErr(err)
-	found := regex.FindStringSubmatch(startUrl)
-	return found[3] + found[4]
+	return u.Host
+	// regex, err := regexp.Compile("(http(s)?:\\/\\/)([\\w.-]+)(\\.[\\w\\.-]+)")
+	// checkErr(err)
+	// found := regex.FindStringSubmatch(startUrl)
+	// return found[3] + found[4]
 }
 
 /**

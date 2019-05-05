@@ -85,6 +85,7 @@ func storeResponse(current string, extMap map[string]int, intMap map[string]int,
 	go func() {
 		/*Add done URL to last URL Memory Queue*/
 		recent.Push(memqueue.URL{
+			URL:    current,
 			Domain: GetDomainFromUrl(current),
 			Clean:  GetCleanUrl(current),
 		})

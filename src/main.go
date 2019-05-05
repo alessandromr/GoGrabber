@@ -15,6 +15,10 @@ import (
 )
 
 func main() {
+
+	/*
+		Gui
+	*/
 	t, err := termbox.New(termbox.ColorMode(terminalapi.ColorMode256))
 	if err != nil {
 		panic(err)
@@ -31,6 +35,7 @@ func main() {
 	if err != nil {
 		panic(err)
 	}
+
 	// lb, err := newLayoutButtons(c, w)
 	// if err != nil {
 	// 	panic(err)
@@ -46,6 +51,9 @@ func main() {
 		panic(err)
 	}
 
+	/*
+		GoGrabber
+	*/
 	loadEnv()
 	//Prepare the Database clients
 	var dbManager = databases.DataManager{}
@@ -60,6 +68,7 @@ func main() {
 
 	go worker(jobs, dbManager, &queue, &recent, w)
 	go inserter(jobs, dbManager, &queue, &recent)
+	go supervisor(&recent, &queue, t)
 
 	// go func() {
 	// 	for {
@@ -80,7 +89,5 @@ func main() {
 	if err := termdash.Run(ctx, t, c, termdash.KeyboardSubscriber(quitter), termdash.RedrawInterval(redrawInterval)); err != nil {
 		panic(err)
 	}
-
-	// select {}
 
 }
