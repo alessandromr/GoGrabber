@@ -1,18 +1,15 @@
-package DomManager
+package dommanager
 
 import (
 	"github.com/PuerkitoBio/goquery"
 )
 
+//DomManager manage DOM JQuery style
 type DomManager struct {
 	Document goquery.Document
 }
 
-/**
-* Get Links from a given document
-* @parameter goquery.document
-* @return []string
- */
+//GetURLFromDocument Get Links from a given document
 func (dm DomManager) GetURLFromDocument() []string {
 	var links []string
 	dm.Document.Find("a").Each(func(index int, element *goquery.Selection) {

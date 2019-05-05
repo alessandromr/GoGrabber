@@ -1,7 +1,7 @@
 package main
 
 import (
-	"./memqueue"
+	"./MemQueue"
 	"github.com/mum4k/termdash/terminal/termbox"
 	"log"
 	"time"
@@ -21,17 +21,13 @@ func supervisor(recent *memqueue.Queue, queue *memqueue.Queue, t *termbox.Termin
 	}
 }
 
-/*
-	Remove duplicates from queue
-*/
+// checkQueue scan queue for duplicates
 func checkQueue(queue *memqueue.Queue) bool {
 	//TODO
 	return true
 }
 
-/*
-	Check recent for duplicates
-*/
+// checkRecent scan recent queue for duplicates
 func checkRecent(recent *memqueue.Queue) bool {
 	var duplicates int
 	for key, toCheck := range recent.URLs {
@@ -52,11 +48,6 @@ func checkRecent(recent *memqueue.Queue) bool {
 		max = int(float64(len(recent.URLs)) * 0.2) //If duplicates are more than the 20% of the total queue length
 	}
 	if duplicates > max {
-		// t.Close()
-		// log.Println(recent.URLs)
-		// log.Println("max", max)
-		// log.Println("dup", duplicates)
-		// log.Fatal()
 		return false
 	}
 	return true

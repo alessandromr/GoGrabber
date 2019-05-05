@@ -1,8 +1,8 @@
 package main
 
 import (
-	"./databases"
-	"./memqueue"
+	"./Databases"
+	"./MemQueue"
 	"log"
 	"time"
 )

@@ -1,10 +1,10 @@
 package main
 
 import (
+	"./Databases"
 	"./DomManager"
-	"./HttpRequester"
-	"./databases"
-	"./memqueue"
+	"./HTTPRequester"
+	"./MemQueue"
 	"os"
 	"strconv"
 	"sync"
@@ -18,7 +18,7 @@ func worker(jobs <-chan string, dbManager databases.DataManager, queue *memqueue
 		}
 		printStart(next, w)
 		/*Prepare request*/
-		requester := HttpRequester.HttpRequester{
+		requester := httprequester.HTTPRequester{
 			URL:       next,
 			UserAgent: "Url Scraper AC",
 			Timeout:   4,
@@ -30,7 +30,7 @@ func worker(jobs <-chan string, dbManager databases.DataManager, queue *memqueue
 		}
 
 		/*Get Link from response document*/
-		dom := DomManager.DomManager{
+		dom := dommanager.DomManager{
 			Document: document,
 		}
 		urls := dom.GetURLFromDocument()

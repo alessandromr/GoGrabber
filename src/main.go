@@ -1,12 +1,10 @@
 package main
 
 import (
-	"./databases"
-	"./memqueue"
+	"./Databases"
+	"./MemQueue"
 	"context"
-	// "log"
 	"os"
-	// "time"
 
 	"github.com/mum4k/termdash"
 	"github.com/mum4k/termdash/container"
@@ -36,12 +34,6 @@ func main() {
 		panic(err)
 	}
 
-	// lb, err := newLayoutButtons(c, w)
-	// if err != nil {
-	// 	panic(err)
-	// }
-	// w.buttons = lb
-
 	gridOpts, err := gridLayout(w) // equivalent to contLayout(w)
 	if err != nil {
 		panic(err)
@@ -60,26 +52,17 @@ func main() {
 	dbManager.SetClients()
 	dbManager.RedisClient.FlushDB()
 
+	//Prepare queues and channels
 	queue := memqueue.Queue{Qlen: 1500}
 	recent := memqueue.Queue{Qlen: 40}
 	jobs := make(chan string, 100)
 
 	jobs <- os.Getenv("START_URL")
 
+	//Start routines
 	go worker(jobs, dbManager, &queue, &recent, w)
 	go inserter(jobs, dbManager, &queue, &recent)
 	go supervisor(&recent, &queue, t)
-
-	// go func() {
-	// 	for {
-	// 		log.Println("")
-	// 		log.Println("Status:")
-	// 		log.Println("Queue len: ", len(queue.URLs))
-	// 		log.Println("Pending jobs: ", len(jobs))
-	// 		log.Println("")
-	// 		time.Sleep(time.Second * 5)
-	// 	}
-	// }()
 
 	quitter := func(k *terminalapi.Keyboard) {
 		if k.Key == 'q' || k.Key == 'Q' {

@@ -1,4 +1,4 @@
-package HttpRequester
+package httprequester
 
 import (
 	"github.com/PuerkitoBio/goquery"
@@ -7,18 +7,15 @@ import (
 	"time"
 )
 
-type HttpRequester struct {
+//HTTPRequester manage http request
+type HTTPRequester struct {
 	URL       string
 	UserAgent string
 	Timeout   time.Duration
 }
 
-/**
-* Make HTTP Request to a given url
-* @parameter null
-* @return goquery.document
- */
-func (req HttpRequester) MakeCheck() (goquery.Document, error) {
+//MakeCheck Make HTTP Request to a given url and return a goquery document
+func (req HTTPRequester) MakeCheck() (goquery.Document, error) {
 	client := &http.Client{
 		Timeout: req.Timeout * time.Second,
 	}
