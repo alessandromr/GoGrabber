@@ -34,7 +34,7 @@ func worker(jobs <-chan string, dbManager databases.DataManager, queue *memqueue
 			Document: document,
 		}
 		urls := dom.GetURLFromDocument()
-		extMap, intMap := DivideURLByType(urls, GetDomainFromUrl(next))
+		extMap, intMap := DivideURLByType(urls, GetDomainFromURL(next))
 		storeResponse(next, extMap, intMap, dbManager, queue, recent)
 
 		printComplete(w)
@@ -86,8 +86,8 @@ func storeResponse(current string, extMap map[string]int, intMap map[string]int,
 		/*Add done URL to last URL Memory Queue*/
 		recent.Push(memqueue.URL{
 			URL:    current,
-			Domain: GetDomainFromUrl(current),
-			Clean:  GetCleanUrl(current),
+			Domain: GetDomainFromURL(current),
+			Clean:  GetCleanURL(current),
 		})
 		wg.Done()
 	}()

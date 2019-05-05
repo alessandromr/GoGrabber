@@ -37,13 +37,13 @@ func checkRequestError(err error, dbManager databases.DataManager, next string, 
 	if err != nil {
 		addText("\nThis URL has something wrong, better skip it\n", w.errorsText)
 		go func() {
-			dbManager.RemoveFromMysql(GetCleanUrl(next))
+			dbManager.RemoveFromMysql(GetCleanURL(next))
 		}()
 
 		/*Add done URL to last URL Memory Queue*/
 		queue.Push(memqueue.URL{
-			Domain: GetDomainFromUrl(next),
-			Clean:  GetCleanUrl(next),
+			Domain: GetDomainFromURL(next),
+			Clean:  GetCleanURL(next),
 		})
 		return true
 	}

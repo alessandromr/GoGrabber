@@ -34,7 +34,7 @@ func inserter(jobs chan<- string, dbManager databases.DataManager, queue *memque
 		for _, inQueue := range messages {
 			bad = false
 			for _, recent := range recent.URLs {
-				if GetDomainFromUrl(inQueue.URL) == recent.Domain {
+				if GetDomainFromURL(inQueue.URL) == recent.Domain {
 					bad = true
 				}
 			}
