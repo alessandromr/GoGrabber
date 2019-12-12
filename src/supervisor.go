@@ -1,7 +1,7 @@
 package main
 
 import (
-	"./MemQueue"
+	"github.com/alessandromr/GoGrabber/memqueue"
 	"github.com/mum4k/termdash/terminal/termbox"
 	"log"
 	"time"

@@ -1,14 +1,15 @@
 package main
 
 import (
-	"./Databases"
-	"./DomManager"
-	"./HTTPRequester"
-	"./MemQueue"
 	"os"
 	"strconv"
 	"sync"
 	"time"
+
+	"github.com/alessandromr/GoGrabber/databases"
+	"github.com/alessandromr/GoGrabber/memqueue"
+	"github.com/alessandromr/GoGrabber/httprequester"
+	"github.com/alessandromr/GoGrabber/dommanager"
 )
 
 func worker(jobs <-chan string, dbManager databases.DataManager, queue *memqueue.Queue, recent *memqueue.Queue, w *widgets) {
