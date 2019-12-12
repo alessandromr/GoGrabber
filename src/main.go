@@ -1,9 +1,9 @@
 package main
 
 import (
-	"./Databases"
-	"./MemQueue"
 	"context"
+	"github.com/alessandromr/GoGrabber/databases"
+	"github.com/alessandromr/GoGrabber/memqueue"
 	"os"
 
 	"github.com/mum4k/termdash"

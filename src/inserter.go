@@ -1,8 +1,8 @@
 package main
 
 import (
-	"./Databases"
-	"./MemQueue"
+	"github.com/alessandromr/GoGrabber/databases"
+	"github.com/alessandromr/GoGrabber/memqueue"
 	"log"
 	"time"
 )
